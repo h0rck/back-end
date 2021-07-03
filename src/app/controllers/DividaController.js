@@ -28,12 +28,15 @@ const clearDivida = (divida) =>{
 // GET
 divida.index = async (req, res) => {
     const id_usuario = req.params.id
+
+    // caso  passe qualquer valor que nao seja numero  
+    if(isNaN(id_usuario)) return res.send('Usuario não encontrado.')
     const user = await users(id_usuario);
-    if(!user) res.send('Usuario não encontrado.')
+    if(!user) return res.send('Usuario não encontrado.')
 
     const divida = await dividas.find({id_usuario})
 
-    res.send(clearDivida(divida));
+    return res.send(clearDivida(divida));
 }
 
 
