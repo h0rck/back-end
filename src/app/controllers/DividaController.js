@@ -1,21 +1,12 @@
-import axios from 'axios';
 import dividas from '../models/dividas.js'
-const divida = {}
-
-const users = async(id = '') => {
-    try{
-        const response = await axios.get('https://jsonplaceholder.typicode.com/users/' + id)
-        return response.data;
-    }catch(err){
-
-    }
-}
+import apiAxios from '../apiAxios.js';
 
 
-/// retirar essa função e add selects nas queries
+/// retirar essa função e add select nas queries
 const clearDivida = (divida) =>{
+
     return divida.map(e => {
-        return{
+        return {
             id_divida:  e.id_divida,
             id_usuario: e.id_usuario,
             motivo:     e.motivo,
@@ -25,46 +16,66 @@ const clearDivida = (divida) =>{
     });
 }
 
-// GET
-divida.index = async (req, res) => {
-    const id_usuario = req.params.id
+export default (() => {
+    const divida = {}
 
-    // caso  passe qualquer valor que nao seja numero  
-    if(isNaN(id_usuario)) return res.send('Usuario não encontrado.')
-    const user = await users(id_usuario);
-    if(!user) return res.send('Usuario não encontrado.')
+    // GET
+    divida.index = async (req, res) => {
+        try{
+            const id_usuario = req.params.id
 
-    const divida = await dividas.find({id_usuario})
+            
+            const user = await apiAxios.apiCliente(id_usuario);
+            
+            if(!user) return res.send('Usuário não encontrado.')
+        
+            const divida = await dividas.find({id_usuario})
+        
+            return res.send(clearDivida([divida]));
 
-    return res.send(clearDivida(divida));
-}
-
-
-//POST
-divida.adicionar = async (req, res) => {
-
-   const user = await users(req.body.id_usuario);
-   if(!user) res.send('Usuario não encontrado.')
-
-    const divida = await dividas.create(req.body);
-
-    res.send(clearDivida([divida]));
+        }catch(err){
+            return res.send(err.message);
+        }
     
-}
-
-//PUT
-
-divida.editar = async (req,res) => {
-    const id_divida = req.params.id;
-
-    const query = await dividas.findOneAndUpdate({id_divida} , req.body, {new: true});
-
-    if(!query) res.send(JSON.stringify(false));
-    const ress = clearDivida([query])
-    res.send(JSON.stringify(ress))
-    
-}
+    }
 
 
+    //POST
+    divida.adicionar = async (req, res) => {
+        console.log(req.body)
+        try {
+            const user = await apiAxios.apiCliente(req.body.id_usuario);
 
-export default divida;
+            if(!user) res.send('Usuário não encontrado.')
+
+            const divida = await dividas.create(req.body);
+            
+            res.send(clearDivida([divida]));
+
+        }catch(err){
+            res.send(err.message)
+        }
+        
+    }
+
+    //PUT
+    divida.editar = async (req,res) => {
+        try{
+
+            const query = await dividas.findOneAndUpdate({id_divida:req.params.id} , req.body, {new: true});
+            res.send(JSON.stringify(clearDivida([query])));
+
+        }catch(err){
+            res.send(err.message)
+        }  
+    }
+
+    //DELETE
+    divida.deletar = () => {
+        res.send(true)
+    }
+
+
+    return divida;
+
+})()

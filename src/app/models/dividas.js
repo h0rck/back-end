@@ -2,31 +2,37 @@
 import sequence from 'mongoose-sequence';
 import mongoose from '../../DB.js';
 
-const AutoIncrement = sequence(mongoose);
+export default (() => {
+    const AutoIncrement = sequence(mongoose);
+    const dividaSchema  = new mongoose.Schema({
+        id_divida:{
+            type: Number,
+        },
+        id_usuario:{
+            type: Number,
+            required: true
+        },
+        motivo:{
+            type: String,
+            required: true
+        },
+        data:{
+            type: Date,
+            required: true
+        },
+        valor:{
+            type: Number,
+            required: true
+        },
+    })
 
-const dividaSchema  = new mongoose.Schema({
-    id_divida:{
-        type: Number,
-        // required: true
-    },
-    id_usuario:{
-        type: Number,
-        required: true
-    },
-    motivo:{
-        type: String,
-    },
-    data:{
-        type: Date,
-    },
-    valor:{
-        type: String
-    },
-})
+    /* 
+    Deixa o campo id_divida alto incremente 
+    */
+    dividaSchema.plugin(AutoIncrement, {id:'order_seq',inc_field: 'id_divida'});
 
+    const dividas = mongoose.model('dividas', dividaSchema);
 
-dividaSchema.plugin(AutoIncrement, {id:'order_seq',inc_field: 'id_divida'});
+    return dividas;
 
-const dividas = mongoose.model('dividas', dividaSchema);
-
-export default dividas;
+})()
