@@ -19,62 +19,50 @@ const clearDivida = (divida) =>{
 export default (() => {
     const divida = {}
 
-    // GET
+    // GET      recebe um id do cliente e retorna todas as suas dividas.
     divida.index = async (req, res) => {
         try{
             const id_usuario = req.params.id
-
-            
             const user = await apiAxios.apiCliente(id_usuario);
-            
             if(!user) return res.send('Usuário não encontrado.')
-        
             const divida = await dividas.find({id_usuario})
-        
-            return res.send(clearDivida([divida]));
 
+            return res.send(clearDivida([divida]));
         }catch(err){
             return res.send(err.message);
         }
     
     }
 
-
-    //POST
+    //POST      Adiciona novas dividas ou cliente 
     divida.adicionar = async (req, res) => {
-        console.log(req.body)
         try {
-            const user = await apiAxios.apiCliente(req.body.id_usuario);
-
+            const id_usuario = req.params.id
+            const {motivo, data, valor} = req.body;
+            const user = await apiAxios.apiCliente(id_usuario);
             if(!user) res.send('Usuário não encontrado.')
-
-            const divida = await dividas.create(req.body);
-            
+            const divida = await dividas.create({id_usuario, motivo, data, valor});
             res.send(clearDivida([divida]));
-
         }catch(err){
-            res.send(err.message)
+            return res.status(400).send({error:err.message});
         }
         
     }
 
-    //PUT
+    //PUT       Edita uma divida especifica
     divida.editar = async (req,res) => {
         try{
-
             const query = await dividas.findOneAndUpdate({id_divida:req.params.id} , req.body, {new: true});
             res.send(JSON.stringify(clearDivida([query])));
-
         }catch(err){
             res.send(err.message)
         }  
     }
 
-    //DELETE
+    //DELETE    Deleta uma divida especifica
     divida.deletar = () => {
         res.send(true)
     }
-
 
     return divida;
 
