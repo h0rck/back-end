@@ -24,12 +24,11 @@ export default (() => {
         try{
             const id_usuario = req.params.id
             const user = await apiAxios.apiCliente(id_usuario);
-            if(!user) return res.send('Usuário não encontrado.')
+            if(!user) return res.status(400).send({error: 'Usuário não encontrado'});
             const divida = await dividas.find({id_usuario})
-
-            return res.send(clearDivida([divida]));
+            return res.send(clearDivida(divida));
         }catch(err){
-            return res.send(err.message);
+            return res.status(400).send({error:err.message});
         }
     
     }
@@ -55,13 +54,22 @@ export default (() => {
             const query = await dividas.findOneAndUpdate({id_divida:req.params.id} , req.body, {new: true});
             res.send(JSON.stringify(clearDivida([query])));
         }catch(err){
-            res.send(err.message)
+            return res.status(400).send({error:err.message});
         }  
     }
 
     //DELETE    Deleta uma divida especifica
-    divida.deletar = () => {
-        res.send(true)
+    divida.deletar = (req, res) => {
+        try{
+            const id_divida = req.params.id;
+            if(isNaN(id_divida))  return res.status(400).send({error: 'Esse id não é valido'});
+            dividas.deleteOne({id_divida}, err => {
+                if(err) return console.log(err);
+            });
+            res.send(true)
+        }catch(err){
+            return res.status(400).send({error:err.message});
+        }
     }
 
     return divida;

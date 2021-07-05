@@ -10,6 +10,10 @@ export default (() => {
 
     const apis = express.Router();
 
+    apis.get('/', (req,res) =>{
+        return res.send('<h1>Api de teste<h1/>')
+    })
+
     // registra o usuário 
     apis.post('/register', authController.register);
 
@@ -17,7 +21,7 @@ export default (() => {
     apis.post('/authenticate', authController.authenticate);
 
     // A partir daqui as rotas são autentificadas 
-    apis.use(authMiddleware);
+    // apis.use(authMiddleware);
 
     // Lista todas as dívidas associadas a um determinado cliente (informando o id do cliente)
     apis.get('/dividas/:id', divida.index);
