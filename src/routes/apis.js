@@ -24,7 +24,7 @@ export default (() => {
     // apis.use(authMiddleware);
 
     // Lista todas as dívidas associadas a um determinado cliente (informando o id do cliente)
-    apis.get('/dividas/:id', divida.index);
+    apis.get('/divida/:id', divida.index);
 
     // Adiciona nova dívida, (informando o id do cliente)
     apis.post('/divida/:id', divida.adicionar);

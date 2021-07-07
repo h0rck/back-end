@@ -10,7 +10,7 @@ const clearDivida = (divida) =>{
             id_divida:  e.id_divida,
             id_usuario: e.id_usuario,
             motivo:     e.motivo,
-            data:       e.data,
+            date:       e.date,
             valor:      e.valor
         }
     });
@@ -37,10 +37,10 @@ export default (() => {
     divida.adicionar = async (req, res) => {
         try {
             const id_usuario = req.params.id
-            const {motivo, data, valor} = req.body;
+            const {motivo, date, valor} = req.body;
             const user = await apiAxios.apiCliente(id_usuario);
-            if(!user) res.send('Usuário não encontrado.')
-            const divida = await dividas.create({id_usuario, motivo, data, valor});
+            if(!user) return res.status(400).send({error:'Usuário não encontrado'})
+            const divida = await dividas.create({id_usuario, motivo, date, valor});
             res.send(clearDivida([divida]));
         }catch(err){
             return res.status(400).send({error:err.message});
@@ -60,6 +60,7 @@ export default (() => {
 
     //DELETE    Deleta uma divida especifica
     divida.deletar = (req, res) => {
+        console.log(req)
         try{
             const id_divida = req.params.id;
             if(isNaN(id_divida))  return res.status(400).send({error: 'Esse id não é valido'});
