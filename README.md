@@ -2,18 +2,13 @@
 
 # instalação
 
-instale o node e o npm
-https://nodejs.org/en/
+1. instale o node e o npm https://nodejs.org/en/
 
-baixe o projeto e rode o comando 
+2. baixe o projeto e rode o comando: npm install
 
-npm install
+3. Configure a arquivo .env
 
-Configure a arquivo .env
-
-Para rodar o servidor use :
-
-npm start 
+4. Para rodar o servidor use : npm start 
 
 O servidor já está rodando no google cloud () para ser consumido pelo front-end.
 
