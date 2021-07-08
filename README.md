@@ -15,7 +15,7 @@ O servidor já está rodando no google cloud  [http://35.198.5.116/](http://35.1
 ## Explicando o projeto 
 
 >    Inicialmente criei uma aplicação com autentificação **JWT** que esta comentada no arquivo `./src/routes/apis.js`. Esse é o arquivo que fica o caminho de cada api e ele redireciona para o `./src/app/controllers`. Essa pasta fica os controladores neles são feitas as regas de negocio de cada api acessada. Utilizei o **MongoDB** com banco a sua conexão e feita no arquivo `./src/databases/mongoDB.js`. Os modais que são onde as colunas são criadas e configuradas fica na pasta
-`./src/app/models` cada aquivo representa uma tabela diferente no banco. A pasta `./src/app/middleware` fica os arquivos de autentificação que estão desabilitados. A aquivo `./src/server.js` conecta tudo isso e da inicio ao servidor. Existem comentarios explicando o que cada função e aquivo faz dentro do projeto.
+`./src/app/models` cada aquivo representa uma tabela diferente no banco. A pasta `./src/app/middleware` fica os arquivos de autentificação que estão desabilitados. A aquivo `./src/server.js` conecta tudo isso e da inicio ao servidor. Existem comentários explicando o que cada função e aquivo faz dentro do projeto.
 
 ## APIs
 
@@ -25,7 +25,7 @@ O id passado é o id do cliente para adicionar uma nova divida a ele.
   --url http://35.198.5.116/divida/1 \
   --header 'Content-Type: application/json'
   --data '{
-	"motivo": "Referente ao aluguel atrazado",
+	"motivo": "Referente ao aluguel atrasádo",
   "date": "2010-12-01",
   "valor": "120"
 }'`
@@ -42,7 +42,7 @@ O id passado é o id da divida que será editada.
   --header 'Content-Type: application/json' \
   --data '  {
     "id_usuario": 1,
-    "motivo": "Disconto na conta de luz",
+    "motivo": "Desconto na conta de luz",
     "date": "2010-12-20,
     "valor": 80
   }'`
