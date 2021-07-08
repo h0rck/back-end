@@ -35,7 +35,7 @@ O id passado é o id do cliente que terá suas dividas expostas
 `curl --request GET \
   --url http://35.198.5.116/divida/1`
 
-*Editar uma dívida:
+* Editar uma dívida:
 O id passado é o id da divida que será editada.
 `curl --request PUT \
   --url http://35.198.5.116/divida/1 \
@@ -48,7 +48,7 @@ O id passado é o id da divida que será editada.
   }'`
 
 
-*Deletar uma dívida:
+* Deletar uma dívida:
  O id passado é o id da divida que será apagada.
 `curl --request DELETE \
   --url http://35.198.5.116/divida/1 \
